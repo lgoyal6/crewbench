@@ -1,0 +1,7 @@
+{
+  "_comment": "PLACEHOLDER RATES. Dollars per million tokens. crewbench does not know your contract; set these before believing any dollar figure. The three-way split is the point: an agent session re-reading a large repo prefix is almost entirely cached input, and billing it at the cache-miss rate overstates cost several-fold.",
+  "source": "PLACEHOLDER retail-shaped rates, not a quote from any provider",
+  "input_per_million": 3.0,
+  "cached_input_per_million": 0.3,
+  "output_per_million": 15.0
+}
