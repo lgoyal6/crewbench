@@ -1,0 +1,159 @@
+{
+  "anchors": {
+    "blended_dollars_per_million": 0.7368421052631579,
+    "tokens_per_pr": 6333333.333333333
+  },
+  "calibration_curve": {
+    "10": 1,
+    "25": 3,
+    "50": 4,
+    "100": 4,
+    "200": 4
+  },
+  "full_trace_table": {
+    "dependency_update": [
+      "claude",
+      "codex"
+    ],
+    "flag_cleanup": [
+      "claude",
+      "codex"
+    ],
+    "flaky_test": [
+      "codex",
+      "claude"
+    ],
+    "migration": [
+      "claude",
+      "codex"
+    ]
+  },
+  "measured_table": {
+    "dependency_update": [
+      "claude",
+      "codex"
+    ],
+    "flag_cleanup": [
+      "claude",
+      "codex"
+    ],
+    "flaky_test": [
+      "codex",
+      "claude"
+    ],
+    "migration": [
+      "claude",
+      "codex"
+    ]
+  },
+  "per_backend": {
+    "claude": {
+      "blended_dollars_per_million": 0.7105932688912456,
+      "cost_per_pr": 4.465109445762711,
+      "cost_per_success": 3.3992446103225804,
+      "label": "claude",
+      "mean_cost_per_task": 2.6344145729999995,
+      "mean_tokens_per_task": 3707345.24,
+      "n": 200,
+      "p50_wall_seconds": 549.2,
+      "p99_wall_seconds": 2084.7,
+      "pr_rate": 0.59,
+      "success_rate": 0.775,
+      "total_cost": 526.8829145999999
+    },
+    "codex": {
+      "blended_dollars_per_million": 0.684644575494269,
+      "cost_per_pr": 4.362534399212598,
+      "cost_per_success": 3.5065941056962027,
+      "label": "codex",
+      "mean_cost_per_task": 2.7702093435,
+      "mean_tokens_per_task": 4046200.675,
+      "n": 200,
+      "p50_wall_seconds": 522.7,
+      "p99_wall_seconds": 3731.4,
+      "pr_rate": 0.635,
+      "success_rate": 0.79,
+      "total_cost": 554.0418687
+    }
+  },
+  "prices": {
+    "cached_input_per_million": 0.3,
+    "input_per_million": 3.0,
+    "output_per_million": 15.0,
+    "source": "PLACEHOLDER retail-shaped rates, not a quote from any provider"
+  },
+  "replay": {
+    "claude-only": {
+      "gated": 57,
+      "summary": {
+        "blended_dollars_per_million": 0.7291221445252462,
+        "cost_per_pr": 4.3854650311475405,
+        "cost_per_success": 3.5668448919999998,
+        "label": "claude-only",
+        "mean_cost_per_task": 2.8764878161290324,
+        "mean_tokens_per_task": 3945138.4623655914,
+        "n": 93,
+        "p50_wall_seconds": 615.1,
+        "p99_wall_seconds": 2816.8,
+        "pr_rate": 0.6559139784946236,
+        "success_rate": 0.8064516129032258,
+        "total_cost": 267.5133669
+      }
+    },
+    "codex-only": {
+      "gated": 66,
+      "summary": {
+        "blended_dollars_per_million": 0.6759502022972095,
+        "cost_per_pr": 4.521279052941177,
+        "cost_per_success": 3.6028942453125,
+        "label": "codex-only",
+        "mean_cost_per_task": 2.7450622821428574,
+        "mean_tokens_per_task": 4061042.1785714286,
+        "n": 84,
+        "p50_wall_seconds": 621.4,
+        "p99_wall_seconds": 5331.7,
+        "pr_rate": 0.6071428571428571,
+        "success_rate": 0.7619047619047619,
+        "total_cost": 230.5852317
+      }
+    },
+    "headroom": {
+      "gated": 0,
+      "summary": {
+        "blended_dollars_per_million": 0.6968775127156549,
+        "cost_per_pr": 4.45515510927835,
+        "cost_per_success": 3.513415004878049,
+        "label": "headroom",
+        "mean_cost_per_task": 2.881000304,
+        "mean_tokens_per_task": 4134155.933333333,
+        "n": 150,
+        "p50_wall_seconds": 552.9,
+        "p99_wall_seconds": 3195.2,
+        "pr_rate": 0.6466666666666666,
+        "success_rate": 0.82,
+        "total_cost": 432.1500456
+      }
+    },
+    "measured": {
+      "gated": 0,
+      "summary": {
+        "blended_dollars_per_million": 0.6856310427278458,
+        "cost_per_pr": 4.399902266326531,
+        "cost_per_success": 3.4773421137096774,
+        "label": "measured",
+        "mean_cost_per_task": 2.8746028139999997,
+        "mean_tokens_per_task": 4192638.0733333332,
+        "n": 150,
+        "p50_wall_seconds": 626.3,
+        "p99_wall_seconds": 2253.3,
+        "pr_rate": 0.6533333333333333,
+        "success_rate": 0.8266666666666667,
+        "total_cost": 431.1904221
+      }
+    }
+  },
+  "runner": "replay",
+  "seed": 7,
+  "stamp": "SYNTHETIC",
+  "tasks": 200
+}
