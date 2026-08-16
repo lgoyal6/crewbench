@@ -79,7 +79,7 @@ TOKEN_SCALE = 0.604
 
 
 def generate(tasks: list[Task], seed: int) -> list[Observation]:
-    """One observation per (task, backend) — full factorial, so the router replay
+    """One observation per (task, backend): full factorial, so the router replay
     can price the road not taken exactly instead of extrapolating."""
     rng = random.Random(seed)
     out: list[Observation] = []
