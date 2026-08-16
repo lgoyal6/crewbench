@@ -1,4 +1,4 @@
-# crewbench — SYNTHETIC
+# crewbench: SYNTHETIC
 
 runner=replay  tasks=200  seed=7
 prices: PLACEHOLDER retail-shaped rates, not a quote from any provider

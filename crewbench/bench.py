@@ -81,7 +81,7 @@ def cmd_run(args) -> None:
     every = [o for group in per_backend.values() for o in group]
     stamp = _stamp(every)
 
-    emit(f"# crewbench — {stamp}")
+    emit(f"# crewbench: {stamp}")
     emit()
     emit(f"runner={runner.kind}  tasks={len(tasks)}  seed={args.seed}")
     emit(f"prices: {prices.source}")
