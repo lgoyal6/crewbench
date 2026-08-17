@@ -6,6 +6,61 @@ below before you quote anything from it.
 A per-task, per-backend benchmark for [groundcrew](https://github.com/ClipboardHealth/groundcrew)'s
 `agent-any` router, plus a counterfactual replay that prices the routing decision itself.
 
+---
+
+## The short version
+
+**What I noticed.** groundcrew hands engineering tickets to a coding agent and lets it open
+the PR. Its `agent-any` router chooses between Claude and Codex on one signal, how much
+session quota is left, and the repository publishes no cost, latency or success figures to
+check that choice against. So the decision is a fuel gauge, and nobody can say whether that
+costs anything.
+
+**Why I built it.** To find out whether the heuristic is leaving money on the table, and to
+give the decision a measured basis if it is.
+
+**How.** I ported `pickBestAgent` and its gates to Python and conformance-tested the port
+**16 out of 16 against groundcrew's own `eligibility.test.ts` and `dispatcher.test.ts`**, so
+the baseline row is their logic rather than my reading of it. Then I replayed the same
+200-task stream through four routing policies under the same session and weekly gates.
+
+**What I found.** Measured routing barely beats the heuristic, and the margin costs more to
+learn than it returns:
+
+| policy | dispatched | skipped by the gate | success | $/PR |
+|---|---:|---:|---:|---:|
+| headroom (theirs) | 150 | 0 | 82.0% | $4.46 |
+| measured success-per-dollar | 150 | 0 | **82.7%** | $4.40 |
+| claude only | 93 | **57** | 80.6% | $4.39 |
+| codex only | 84 | **66** | 76.2% | $4.52 |
+
+The single-backend policies look cheapest on total spend, $267 and $230 against $432, but
+only because the gate skipped 57 and 66 tasks. That is why `dispatched` and `skipped` sit in
+the same table as the rates.
+
+The more useful result is how much it costs to learn that 0.7 point edge:
+
+| calibration tasks | sessions burned | categories ranked correctly |
+|---:|---:|---:|
+| 10 | 20 | 1 of 4 |
+| 25 | 50 | 3 of 4 |
+| **50** | **100** | **4 of 4** |
+
+The preference table only stabilises after 50 paired tasks, which is 100 sessions of real
+spend on both backends. **Paying 100 sessions to gain 0.7 points is a bad trade, so the
+headroom heuristic is the correct default** until someone has a reason to think the ranking
+has shifted. This harness is the tripwire for that moment, not a replacement for the router.
+
+**One thing that is not simulated at all.** Reading the code, `status` records wall clock and
+PR outcomes but carries **no token or cost field anywhere**, so cost per ticket is not
+computable today. That gap is why `--token-probe` exists below, and it now has a fix open
+upstream: [ClipboardHealth/groundcrew#379](https://github.com/ClipboardHealth/groundcrew/pull/379).
+
+**What it is not.** Every performance number above is `SYNTHETIC`, replayed from invented
+priors rather than measured from real runs. The ranking of Claude against Codex is a property
+of those priors and is not evidence about either. What is real is the router port and its
+16 passing conformance tests. Swap in observations with `--runner crew`.
+
 ## Why
 
 groundcrew's `agent-any` label routes on exactly one signal. From
