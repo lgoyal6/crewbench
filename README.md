@@ -110,9 +110,33 @@ starting point, not a tested integration.
 `--token-probe` is a shell command you supply that prints
 `{"input_tokens":…,"cached_input_tokens":…,"output_tokens":…}` for the finished session.
 Without it the dollar columns come back zero and the report says zero rather than guessing.
-If groundcrew v2's JSON-lines log (`logging.file`, one global stream with correlation ids)
-carried per-run token counts, this probe would not be needed and the whole benchmark would
-fall out of the log groundcrew already writes.
+If groundcrew's run state carried per-run token counts, this probe would not be needed and
+the whole benchmark would fall out of what groundcrew already writes.
+
+**That gap now has a fix upstream:**
+[ClipboardHealth/groundcrew#379](https://github.com/ClipboardHealth/groundcrew/pull/379).
+
+Finding it here is what prompted the PR. It turns out the numbers were already free: Claude
+writes a JSONL transcript per session with `usage` stamped on every assistant message, so
+the `SessionEnd` hook groundcrew already installs can read it. No API call, no provider
+lookup, no second run. The counts land on `RunState.usage`, beside the wall clock and pull
+request outcome `status` already tracks.
+
+Two things that decide whether that number is trustworthy, both worth knowing if you write
+your own probe against these transcripts:
+
+- **Deduplicate by `message.id`.** A transcript repeats the same assistant message. On a
+  real one, 718 records carried usage but only 327 ids were distinct, and summing every
+  record inflated the total **2.13x**. The inflation is not uniform across fields (2.10x on
+  cache reads against 2.64x on output), so it distorts the input/output mix as well as the
+  total and cannot be corrected with a constant afterwards. The PR collapses to the highest
+  value per field per id, which is also correct if a version writes cumulative snapshots
+  rather than exact repeats.
+- **Keep cache reads separate from fresh input.** They bill roughly ten times apart, so a
+  single total prices a cache-heavy session as though nothing were cached.
+
+If that lands, `--token-probe` becomes unnecessary for Claude sessions and the dollar
+columns fill themselves in.
 
 Counterfactual replay needs a **full-factorial** trace: every task observed on every
 backend. That doubles the spend and is the honest price of being able to compare routing
