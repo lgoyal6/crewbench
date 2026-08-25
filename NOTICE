@@ -1,0 +1,22 @@
+crewbench
+Copyright 2026 Laksh Goyal
+
+The code in this repository is licensed under the MIT License (see LICENSE).
+
+------------------------------------------------------------------------------
+groundcrew
+
+crewbench/router.py is a Python port of routing logic from
+ClipboardHealth/groundcrew (https://github.com/ClipboardHealth/groundcrew) at
+commit 32346b9, specifically pickBestAgent, classifyUsageExhaustion and
+weeklyPacedBudgetPercentage in src/commands/eligibility.ts.
+
+groundcrew is licensed under the MIT License, Copyright (c) Clipboard Health.
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+that software and associated documentation files, to deal in the Software without
+restriction, subject to the condition that the above copyright notice and this
+permission notice be included in all copies or substantial portions of the
+Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+The port exists so the benchmark's baseline is their real router rather than a
+paraphrase of it.
