@@ -84,6 +84,30 @@ derivable from what ships. **Tokens and dollars are recorded nowhere.**
 
 crewbench is the table that decision would need.
 
+## How a run is put together
+
+```mermaid
+flowchart LR
+  TASKS["tasks.py<br/>four ticket categories"] --> SIM["simulate.py<br/>full-factorial trace<br/>from stated priors"]
+  SIM --> TRACE[("traces/synthetic-v1.jsonl<br/>SYNTHETIC by default")]
+  TRACE --> RR["runners.py<br/>ReplayRunner<br/>offline, deterministic"]
+  REAL(["the real crew binary"]) -.->|"--runner crew"| CR["runners.py<br/>CrewRunner<br/>costs money"]
+  RR --> OBS["Observation per<br/>(task, backend)"]
+  CR --> OBS
+  PRICES[("prices.json")] --> MET["metrics.py<br/>p50/p99, tokens,<br/>$ per task, per success, per PR"]
+  OBS --> MET
+  OBS --> REPLAY["replay.py<br/>same stream, four policies"]
+  ROUTER["router.py<br/>port of groundcrew's agent-any"] --> REPLAY
+  MET --> OUT[("out/results.json<br/>out/report.md")]
+  REPLAY --> OUT
+
+  style TRACE fill:#8250df,color:#fff
+```
+
+`router.py` is a port of groundcrew's own eligibility logic rather than a
+paraphrase, which is what makes the replay a counterfactual against their real
+policy instead of against a strawman.
+
 ## What it measures
 
 Per backend and per task category: task success rate, PR-rate, p50/p99 wall clock,
